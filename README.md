@@ -1,6 +1,6 @@
-# MASTERS PROJECT - ROS 
+# MASTERS PROJECT - ROS - REF
 
-> WIP
+This repository is based off of work already done by Bhushan and Baeksoo. This will be used as a reference.
 
 ## First time steps 
 
@@ -9,8 +9,8 @@ When first cloning this repository you must run the `init.sh` script to properly
 You will only need to run this step once when first cloning this repository so ROS can set up the proper build folders and scripts for your machine.
 
 ```sh
-git clone https://github.com/voandrew/masters-ros.git
-cd masters-ros
+git clone https://github.com/voandrew/masters-ros-ref.git
+cd masters-ros-ref
 chmod +x init.sh
 ./init.sh
 ```
