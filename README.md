@@ -110,24 +110,56 @@ chmod +x init.sh
 ./init.sh
 ```
 
-### Notes
-
-In the root directory of the project workspace make sure to source the setup.bash file first.
-
-```sh
-cd masters-ros-ref
-source devel/setup.bash
-```
-
 ### Git Repo
 
-For consistency and tidyness, please follow some of the `git` guidelines for this repo:
+For consistency and tidyness, please follow some of the `git` guidelines for this repo.
+
+#### Workflow
+
+It's recommended to work *in your own branch* and not the `master` branch. The master branch should only contain snapshots of code that are working.
+
+Example
+
+```sh
+# assume in master branch
+git branch devfeature
+git checkout devfeature
+# shortcut: git checkout -b devfeature
+
+# You are now in the 'devfeature' branch. do all your work here
+# to push to the upstream, you must create a ref on the remote
+# Run the following command to create the remote branch + push to it.  
+git push --set-upstream origin devfeature # this command only needs to be run once
+
+# If the branch is already created on the remote you can just push to it with:
+git push
+
+# Merging the changes into master branch.
+# Assumes you're in your 'devfeature' branch:
+git pull # syncs your devfeature branch with upstream
+git checkout master
+
+# You're now in the master branch
+git pull             # sync local master branch with the upstream branch
+git merge devfeature # merges your 'devfeature' branch into 'master'
+git push --all       # updates the remote branches
+```
 
 #### Commit Messages
 
 All commit messages should be in the form of "This commit will ___" where your message is in the blank space. The first letter must be capitalized as well and not end with a period. 
 
-For example: `git commit -m "Add a new feature`, **not** `git commit -m "added a new feature.`
+For example: 
+
+Correct way:
+```sh
+git commit -m "Add a new feature"
+```
+
+**Incorrect**
+```sh
+git commit -m "added a new feature."
+```
 
 ##### Long Messages
 Try to keep the commit message short and simple. If you need a longer description, add a **second `-m`** flag to put the longer message there. 
@@ -146,6 +178,15 @@ The `.gitignore` file will include some common filetypes not to include like com
 Also never try to commit generated files/folders. These include the `build` and `devel` directories. Only commit the `src` folder and allow the `catkin*` commands to generate the proper folders/files.
 
 ## Troubleshooting Common Issues
+
+### My ROS packages are not showing up
+
+In the root directory of the project workspace make sure to source the `devel/setup.bash` file first. This must be done in every new shell session.
+
+```sh
+cd masters-ros-ref
+source devel/setup.bash
+```
 
 ### Unable to run `roscore` due to incorrect ROS_IP
 
