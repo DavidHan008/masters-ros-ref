@@ -109,6 +109,16 @@ cd masters-ros-ref
 chmod +x init.sh
 ./init.sh
 ```
+### Editor Settings
+
+Please use the following editor settings to make sure source code is consistent across all users.
+
+| Setting | Value | Comment |
+| ------- | ----- | ------- |
+| tab style | use `spaces` | This is so that all source has the same formatting regardless of viewer settings |
+| tab size | 4 spaces | Python requires 4 spaces as an indentation |
+
+If these rules aren't followed, then please at the minimum **do NOT mix tabs and spaces**. Stick to one. Especially with python code.
 
 ### Git Repo
 
