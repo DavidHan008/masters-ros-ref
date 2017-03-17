@@ -16,7 +16,8 @@ sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C
 sudo apt-get install ros-kinetic-desktop-full
 
 # Setup ROS
-rosdep init
+sudo rosdep init
+# sudo c_rehash /etc/ssl/certs  # Run this if the above command fails
 rosdep update
 
 echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
@@ -37,7 +38,8 @@ sudo apt-get update
 sudo apt-get install ros-indigo-desktop-full
 
 # Setup ROS
-rosdep init
+sudo rosdep init
+# sudo c_rehash /etc/ssl/certs  # Run this if the above command fails
 rosdep update
 
 echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
