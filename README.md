@@ -116,6 +116,19 @@ dhcp-range=192.168.8.20,192.168.8.254,255.255.255.0,12h
 
 Note the `dhcp-range` parameter. All connecting devices will get an IP address between `192.168.8.20` and `192.168.8.254` in the above configuration.
 
+###### Fix `dnsmasq` service crashing
+
+The `dnsmasq` service was trying to start before all the network interfaces came
+online so it crashed. To fix this the following must be added to its service
+file.
+
+Add these lines under the `[Unit]` section of
+`/lib/systemd/system/dnsmasq.service`
+```
+After=network-online.target
+Wants=network-online.target
+```
+
 ##### Install bridge-utils
 ```sh
 sudo apt-get update
