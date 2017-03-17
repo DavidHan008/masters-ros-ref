@@ -4,9 +4,31 @@ If the Jetson board is already setup please jump to the **Development** section 
 
 ## Jetson TK1/TX1 Setup
 
-### ROS Indigo
+### ROS Kinetic (Ubuntu 16.04)
+```sh
+# Add ROS repository
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+# Add ROS key
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+
+# Install ROS Kinetic
+sudo apt-get install ros-kinetic-desktop-full
+
+# Setup ROS
+rosdep init
+rosdep update
+
+echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+sudo apt-get install python-rosinstall
+```
+
+### ROS Indigo (Ubuntu 14.04)
 
 ```sh
+# Add ROS repository
+
 # Add ROS keyserver
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 sudo apt-get update
