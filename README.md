@@ -61,8 +61,11 @@ sudo apt-get install python-rosinstall
 
 
 You made need to create the file if necessary. 
-First add this line to `/etc/modprobe.d/bcmdhd.conf`:
-`options bcmdhd op_mode=2`
+First add this line to `/etc/modprobe.d/bcmdhd.conf`
+> This line will allow the Jetson TX1 to broadcast its AP 
+```
+options bcmdhd op_mode=2
+```
 
 ##### Install Utilities
 
