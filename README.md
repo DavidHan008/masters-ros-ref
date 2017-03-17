@@ -50,14 +50,87 @@ sudo apt-get install python-rosinstall
 
 ### Network Setup
 
-#### Install bridge-utils
+#### Setting up SSH access on the TX1
+> The TX1 has a built in wifi chip (Broadcom?). The best configuration of the TX1 that's useable at SJSU is the following:
+
+| Interface | Jetson IP     | Comments                                |
+| --------- | ------------- | --------------------------------------- |
+| `eth0`    | 192.168.x.xx  | Used for Internet connectivity          |
+| `eth1`    | 192.168.x.xx  | Used for Lidar                          |
+| `wlan0`   | 192.168.8.1   | Used so that users can SSH into the TX1 |
+
+
+You made need to create the file if necessary. 
+First add this line to `/etc/modprobe.d/bcmdhd.conf`:
+`options bcmdhd op_mode=2`
+
+##### Install Utilities
+
+`hostapd` is used to create the network hotspot
+`dnsmaskq` is used as a mini dns server to give the clients IP addresses
+
+```sh
+sudo apt-get update
+sudo apt-get install hostapd dnsmaskq
 ```
+
+##### Setup `hostapd`
+
+Create the file `/etc/hostapd/hostapd.conf` and write the following to it:
+Note that you can change the `ssid` option to whatever you'd like to name the wifi AP.
+```
+interface=wlan0
+driver=nl80211
+ssid=jeonjetsontx1
+macaddr_acl=0
+channel=7
+ieee8021x=0
+eap_server=0
+```
+
+Modify the `/etc/network/interface` file so it resembles this:
+```sh
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+auto wlan0
+iface wlan0 inet static
+hostapd /etc/hostapd/hostapd.conf
+address 192.168.8.1
+netmask 255.255.255.0
+```
+
+##### Setup `dnsmaskq`
+
+There is a file called `/etc/dnsmasq.conf` that is already populated with a lot of options that are commented out. Either find the corresponding lines and uncomment/fill out the variables or just add these to the top of the file:
+
+```
+interface=lo,wlan0
+no-dhcp-interface=lo
+dhcp-range=192.168.8.20,192.168.8.254,255.255.255.0,12h
+```
+
+Note the `dhcp-range` parameter. All connecting devices will get an IP address between `192.168.8.20` and `192.168.8.254` in the above configuration.
+
+##### Install bridge-utils
+```sh
 sudo apt-get update
 sudo apt-get install bridge-utils
 ```
 
+##### Apply Changes
+
+Start the `hostapd` and `dnsmasq` services and then reboot the system
+```sh
+sudo systemctl start dnsmasq
+sudo systemctl start hostapd
+sudo reboot now
+```
+
 #### Setup the Bridge
 > These instructions asumes you have the configuration below
+> This may not be needed for systems without PicoStation
 
 | Interface | Name             | Jetson  IP Address |
 | --------- | ---------------- | ------------------ |
